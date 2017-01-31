@@ -4,8 +4,9 @@ Now In Nuget Form:
 [https://www.nuget.org/packages/TS.CodeGenerator]
 
 example post build step ps1:
-
-execute: powershell -file "$(SolutionDir)\MY.Contracts\build_dts.ps1"
+```
+powershell -file "$(SolutionDir)\MY.Contracts\Generate_dts.ps1"
+```
 
 build_dts.psl:
 ```powershell
