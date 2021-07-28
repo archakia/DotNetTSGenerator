@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <!-- Change the default location where NuGet will put the build output -->
+    <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
+    <Authors>Max Fridberg</Authors>
+    <Version>1.0.1.0</Version>
+    <RepositoryUrl>https://github.com/maxfridbe/DotNetTSGenerator</RepositoryUrl>
+    <Description>A Continuation of the TS.CodeGenerator Package which integrates with msbuild</Description>
+
+    <!-- BS that needs to exist-->
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.10.0" />
+    <PackageReference Include="System.Runtime" />
+    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+    <PackageReference Update="System.Runtime" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- pack the props files -->
+    <Content Include="build\net5.0\TS.CodeGenerator.MSBuildTasks.props" PackagePath="build\net5.0\" />
+    <Content Include="buildMultiTargeting\TS.CodeGenerator.MSBuildTasks.props" PackagePath="buildMultiTargeting\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TS.CodeGenerator.Core\TS.CodeGenerator.csproj" PrivateAssets="All" />
+  </ItemGroup>
+
+
+</Project>

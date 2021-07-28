@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.5;net462</TargetFrameworks>
+    <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.0.36</AssemblyVersion>
-    <FileVersion>1.0.0.36</FileVersion>
-    <title>.Net TS Generator</title>
-    <Version>1.0.0.36</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1.0</Version>
+    <title>Dotnet TS Generator</title>
     <Description>Package comprised of dll and ps1 to run as a post build,
       PS1 will generate a d.ts and allow you to modify where to place it.
       All you need to do is run it as a post-build event.
@@ -15,15 +15,10 @@
     
     
     <Authors>Max Fridberg</Authors>
-    <Company>TS.CodeGenerator</Company>
     <Product>TS.CodeGenerator</Product>
-    <PackageProjectUrl>https://github.com/KnowledgeLakegithub/.NetTSGenerator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/maxfridbe/DotNetTSGenerator</PackageProjectUrl>
     <IsTool>true</IsTool>
     
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-  </ItemGroup>
 
 </Project>
