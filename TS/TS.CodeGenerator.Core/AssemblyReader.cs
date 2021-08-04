@@ -1,8 +1,6 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 
 namespace TS.CodeGenerator
 {
@@ -70,14 +68,8 @@ namespace TS.CodeGenerator
             var files = Directory.EnumerateFiles(_resolveDirectory, "*.dll");
             var fi = new FileInfo(dllPath);
 
+            Assembly asm = Assembly.LoadFrom(fi.FullName);// AssemblyLoadContext.Default.LoadFromAssemblyPath(fi.FullName);
 
-#if NET462
-            Assembly asm = Assembly.LoadFrom(fi.FullName);
-#else
-
-            Assembly asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(fi.FullName);
-
-#endif
             AddAssembly(asm);
 
 

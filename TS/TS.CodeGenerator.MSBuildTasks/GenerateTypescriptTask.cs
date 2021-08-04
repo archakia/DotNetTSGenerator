@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
-using System.Runtime.Loader;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -20,12 +18,13 @@ namespace TS.CodeGenerator.MSBuildTasks
             Settings.MethodReturnTypeFormatString = "{0}";
             var inputFolder = Path.GetDirectoryName(InputDLL);
 
-            Assembly asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(InputDLL);
+            
+            Assembly asm = Assembly.LoadFrom(InputDLL); //AssemblyLoadContext.Default.LoadFromAssemblyPath(InputDLL);
 
             var files = Directory.GetFiles(inputFolder, "*.dll");
             foreach (var file in files)
             {
-                var l = AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
+                var l = Assembly.LoadFrom(file);// AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
             }
 
             var reader = new AssemblyReader();

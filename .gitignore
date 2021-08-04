@@ -174,3 +174,5 @@ UpgradeLog*.htm
 FakesAssemblies/
 /TS/.vs/TS/DesignTimeBuild
 /TS/.vs/TS/v15/Server/sqlite3
+/TS/.vs/TS/v16/TestStore/0/testlog.manifest
+/TS/.vs/TS/v16/TestStore/0/*.testlog
