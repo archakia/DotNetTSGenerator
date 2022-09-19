@@ -7,8 +7,15 @@ namespace TS.CodeGenerator
 {
     public class TSMethod : IGenerateTS
     {
+        private const string formatMethodOptional = @"{0}?({1}):{2};";
+        private const string formatMethodRequired = @"{0}({1}):{2};";
+
         private readonly MethodInfo _mi;
         private readonly Func<Type, string> _mapType;
+
+        public string MethodName { get; private set; }
+        public string MethodReturnType { get; private set; }
+        public List<TSParameter> Parameters { get; private set; }
 
         public TSMethod(MethodInfo mi, Func<Type, string> mapType)
         {
@@ -20,19 +27,13 @@ namespace TS.CodeGenerator
 
         }
 
-        private const string formatMethodOptional = @"{0}?({1}):{2};";
-        private const string formatMethodRequired = @"{0}({1}):{2};";
-
-        public string MethodName { get; private set; }
-        public string MethodReturnType { get; private set; }
-        public List<TSParameter> Parameters { get; private set; }
-
         public void Initialize()
         {
             foreach (var tsParameter in Parameters)
             {
                 tsParameter.Initialize();
             }
+
             MethodReturnType = _mapType(_mi.ReturnType);
         }
 
@@ -45,6 +46,7 @@ namespace TS.CodeGenerator
                                     MethodName,
                                     paramStr,
                                     string.Format(Settings.MethodReturnTypeFormatString, MethodReturnType));
+
             return res;
         }
     }

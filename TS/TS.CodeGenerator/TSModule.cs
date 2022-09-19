@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 
 namespace TS.CodeGenerator
@@ -56,7 +54,8 @@ namespace TS.CodeGenerator
             var allInterfaces = string.Join(Settings.EndOfLine, Interfaces.Where(i => !Settings.IgnoreInterfaces.Contains(i.InterFaceName)).Select(i => i.ToTSString())).Replace(Settings.EndOfLine, indentedEOL);
             var allenums = string.Join(Settings.EndOfLine, Enumerations.Select(e => e.ToTSString())).Replace(Settings.EndOfLine, indentedEOL);
             var submods = string.Join(Settings.EndOfLine, SubModules.Select(m => m.ToTSString())).Replace(Settings.EndOfLine, indentedEOL);
-            return string.Format(formats, Name, allenums, allInterfaces, submods).Replace(Settings.EndOfLine, indentedEOL); 
+
+            return string.Format(formats, Name, allenums, allInterfaces, submods).Replace(Settings.EndOfLine, indentedEOL);
         }
 
         public void AddSubNamespaceType(List<string> ns, Type type)
@@ -74,6 +73,7 @@ namespace TS.CodeGenerator
                         };
                         Enumerations.Add(tsconstenum);
                     }
+
                     return;
                 }
                 var tsinterface = new TSInterface(type, _mapType)
@@ -83,7 +83,6 @@ namespace TS.CodeGenerator
                 Interfaces.Add(tsinterface);
 
                 return;
-
             }
 
             var root = ns.First();

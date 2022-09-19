@@ -18,6 +18,25 @@ namespace TS.CodeGenerator
         private Type _type;
         private readonly Func<Type, string> _mapType;
 
+        public List<Type> Interfaces { get; set; }
+        public bool IsExported { get; set; }
+        public string InterFaceName { get; private set; }
+        public List<string> DerivedInterfaces { get; private set; } = new List<string>();
+        public List<TSProperty> Properties { get; private set; }
+        public List<TSMethod> Methods { get; private set; }
+        public List<TSGenericParameter> GenericParameters { get; set; }
+        public string ModuleName { get; set; }
+        public string FullName { get; }
+        public bool IsGenericMetaClass
+        {
+            get
+            {
+                if (GenericParameters == null)
+                    return false;
+                return GenericParameters.Any(p => !p.IsGenericParameter);
+            }
+        }
+
         public TSInterface(Type type, Func<Type, string> mapType)
         {
             var ti = type.GetTypeInfo();
@@ -58,27 +77,6 @@ namespace TS.CodeGenerator
             Methods = methods.Select(m => new TSMethod(m, _mapType)).ToList();
         }
 
-        public List<Type> Interfaces { get; set; }
-        public bool IsExported { get; set; }
-        public string InterFaceName { get; private set; }
-        public List<string> DerivedInterfaces { get; private set; } = new List<string>();
-        public List<TSProperty> Properties { get; private set; }
-        public List<TSMethod> Methods { get; private set; }
-        public List<TSGenericParameter> GenericParameters { get; set; }
-        public string ModuleName { get; set; }
-
-        public string FullName { get; }
-
-        public bool IsGenericMetaClass
-        {
-            get
-            {
-                if (GenericParameters == null)
-                    return false;
-                return GenericParameters.Any(p => !p.IsGenericParameter);
-            }
-        }
-
         public void Initialize()
         {
             var ti = _type.GetTypeInfo();
@@ -89,11 +87,11 @@ namespace TS.CodeGenerator
             }
 
             //base types
-            var exc = new [] { Types.Any, Types.Boolean, Types.Number, Types.String, Types.Void };
+            var exc = new[] { Types.Any, Types.Boolean, Types.Number, Types.String, Types.Void };
             foreach (var intr in Interfaces)
             {
                 var typ = _mapType(intr);
-                if(!exc.Contains(typ))
+                if (!exc.Contains(typ))
                     DerivedInterfaces.Add(typ);
             }
             //DerivedInterfaces = Interfaces.Select(_mapType).Except(new[] { Types.Any, Types.Boolean, Types.Number, Types.String, Types.Void }).ToList();
@@ -141,6 +139,7 @@ namespace TS.CodeGenerator
                                             derived,
                                             properties,
                                             methodes);
+
             return result;
         }
     }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TS.CodeGenerator
 {
@@ -54,10 +51,9 @@ namespace TS.CodeGenerator
         }
 
         public static string Indentation { get; set; }
-
         public static string MethodReturnTypeFormatString { get; set; }
         public static bool MakeMethodsOptional { get; set; }
-      //  public static bool FollowExternalAssemblies { get; set; }
+        //  public static bool FollowExternalAssemblies { get; set; }
         public static Dictionary<Type, string> StartingTypeMap { get; set; }
         public static string EndOfLine { get; set; }
         public static bool ConstEnumsEnabled { get; set; }
@@ -65,5 +61,4 @@ namespace TS.CodeGenerator
         public static List<string> IgnoreInterfaces { get; set; }
         public static string DictionaryFormat { get; set; }
     }
-
 }

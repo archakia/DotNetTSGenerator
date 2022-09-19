@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Reflection;
 
 namespace TS.CodeGenerator
@@ -13,6 +10,7 @@ namespace TS.CodeGenerator
         public List<string> EnumNames;
         public string Name;
         private Type _type;
+
         public bool IsExported { get; set; }
         public string ModuleName { get; set; }
 
@@ -21,6 +19,7 @@ namespace TS.CodeGenerator
             var ti = enumType.GetTypeInfo();
             if (!ti.IsEnum)
                 throw new Exception("Must be an enum");
+
             _type = enumType;
             Name = enumType.Name;
             ModuleName = enumType.Namespace;
@@ -42,8 +41,8 @@ namespace TS.CodeGenerator
                 + "\t{2}"
                 + Settings.EndOfLine
                 + "}}" + Settings.EndOfLine;
+
             return string.Format(formatString, _type.FullName, Name, enums);
         }
-
     }
 }

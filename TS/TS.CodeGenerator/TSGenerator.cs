@@ -11,12 +11,8 @@ namespace TS.CodeGenerator
         private Dictionary<Type, TSInterface> _interfaceMap;
         private Dictionary<Type, TSConstEnumeration> _enumerationsMap;
         private List<Assembly> _allowedAssemblies;
-        public bool Modules { get; set; }
-        public TSGenerator(Assembly currentAssembly):this()
-        {
-            _allowedAssemblies.Add(currentAssembly);
 
-        }
+        public bool Modules { get; set; }
 
         public TSGenerator()
         {
@@ -25,6 +21,12 @@ namespace TS.CodeGenerator
             _interfaceMap = new Dictionary<Type, TSInterface>();
             _allowedAssemblies = new List<Assembly>();
         }
+
+        public TSGenerator(Assembly currentAssembly) : this()
+        {
+            _allowedAssemblies.Add(currentAssembly);
+        }
+        
         public void AddFollowAssembly(Assembly asm)
         {
             _allowedAssemblies.Add(asm);
@@ -43,7 +45,6 @@ namespace TS.CodeGenerator
             if (!ti.IsEnum)
                 return false;
 
-
             if (!Settings.ConstEnumsEnabled)
                 _typeMap.Add(type, Types.Any);
 
@@ -55,7 +56,6 @@ namespace TS.CodeGenerator
             }
 
             return true;
-
         }
 
         private bool _handleIfGenericEnumerable(Type type)
@@ -94,11 +94,11 @@ namespace TS.CodeGenerator
             if (!type.IsArray)
                 return false;
 
-
             var typeOfElements = type.GetElementType();
             var name = GenerateLookupTypeName(typeOfElements) + "[]";
 
             _addTypeMap(type, name);
+
             return true;
         }
 
@@ -108,9 +108,8 @@ namespace TS.CodeGenerator
             if (!ti.IsGenericType)
                 return false;
 
-
             var td = ti.GetGenericTypeDefinition();
-            bool isDict = 
+            bool isDict =
                         td == typeof(Dictionary<,>)
                         || td == typeof(ILookup<,>)
                         || td == typeof(IDictionary<,>)
@@ -126,16 +125,17 @@ namespace TS.CodeGenerator
             var t = string.Format(Settings.DictionaryFormat, p1, p2);
 
             _addTypeMap(type, t);
+
             return true;
         }
-
 
         private bool _handleIfGenericParameter(Type type)
         {
             if (!type.IsGenericParameter)
                 return false;
 
-            _addTypeMap(type,  type.Name);
+            _addTypeMap(type, type.Name);
+
             return true;
         }
 
@@ -150,6 +150,7 @@ namespace TS.CodeGenerator
             }
 
             AddInterface(type);
+
             var itf = _interfaceMap[type];
             _addTypeMap(type, Modules ? itf.ModuleName + "." + itf.InterFaceName : itf.InterFaceName);
 
@@ -217,7 +218,6 @@ namespace TS.CodeGenerator
             return ints + Settings.EndOfLine + enums;
         }
 
-
         static bool IsGenericEnumerable(Type t)
         {
             var ti = t.GetTypeInfo();
@@ -225,12 +225,11 @@ namespace TS.CodeGenerator
                 return false;
 
             var genType = t.GetGenericTypeDefinition();
-            
-            return genType == typeof(IEnumerable<>) 
+
+            return genType == typeof(IEnumerable<>)
                     || genType == typeof(IList<>)
                     || genType == typeof(List<>)
                     || genType == typeof(ICollection<>);
-
         }
 
         public void AddEnumeration(Type enumeration)
@@ -242,10 +241,9 @@ namespace TS.CodeGenerator
 
             var enumerationTS = new TSConstEnumeration(enumeration);
             _enumerationsMap.Add(enumeration, enumerationTS);
+
             enumerationTS.Initialize();
         }
-
-
 
         public void AddInterface(Type type)
         {
@@ -254,6 +252,7 @@ namespace TS.CodeGenerator
 
             var tsInterface = new TSInterface(type, GenerateLookupTypeName);
             _interfaceMap.Add(type, tsInterface);
+
             tsInterface.Initialize();
         }
     }

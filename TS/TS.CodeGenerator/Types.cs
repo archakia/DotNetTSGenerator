@@ -4,7 +4,6 @@
     {
         static Types()
         {
-
             String = "string";
             Number = "number";
             Boolean = "boolean";

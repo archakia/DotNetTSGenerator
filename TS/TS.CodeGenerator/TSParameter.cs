@@ -5,8 +5,15 @@ namespace TS.CodeGenerator
 {
     public class TSParameter : IGenerateTS
     {
+        private const string formatParameter = @"{0}:{1}/*{2}*/";
+        private const string formatParameterNullable = @"{0}?:{1}/*{2}*/";
+
         private readonly ParameterInfo _parameterInfo;
         private readonly Func<Type, string> _mapType;
+
+        public string ParameterName { get; private set; }
+        public string ParameterType { get; private set; }
+        public bool IsOptional { get; set; }
 
         public TSParameter(ParameterInfo parameterInfo, Func<Type, string> mapType)
         {
@@ -14,10 +21,7 @@ namespace TS.CodeGenerator
             _mapType = mapType;
             ParameterName = parameterInfo.Name;
             IsOptional = _parameterInfo.IsOptional || IsNullable(_parameterInfo.ParameterType);
-
         }
-
-        public bool IsOptional { get; set; }
 
         static bool IsNullable(Type type)
         {
@@ -26,11 +30,6 @@ namespace TS.CodeGenerator
             return false; // value-type
         }
 
-        public string ParameterName { get; private set; }
-        public string ParameterType { get; private set; }
-
-        private const string formatParameter = @"{0}:{1}/*{2}*/";
-        private const string formatParameterNullable = @"{0}?:{1}/*{2}*/";
         public void Initialize()
         {
             ParameterType = _mapType(_parameterInfo.ParameterType);

@@ -8,26 +8,23 @@ namespace TS.CodeGenerator
         private readonly Func<Type, string> _mapType;
         private Type _type;
 
+        public string PropertyName { get; private set; }
+        public string PropertyType { get; private set; }
+
         public TSProperty(PropertyInfo propertyInfo, Func<Type, string> mapType)
         {
             _mapType = mapType;
-
             _type = propertyInfo.PropertyType;
+
             PropertyName = propertyInfo.Name;
-
-
         }
         public TSProperty(FieldInfo finfo, Func<Type, string> mapType)
         {
             _mapType = mapType;
             _type = finfo.FieldType;
+
             PropertyName = finfo.Name;
-
-
         }
-
-        public string PropertyName { get; private set; }
-        public string PropertyType { get; private set; }
 
         public void Initialize()
         {
@@ -54,5 +51,4 @@ namespace TS.CodeGenerator
                    pt.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
     }
-
 }
