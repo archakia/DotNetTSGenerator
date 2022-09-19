@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace lib.test.a.c
+﻿namespace lib.test.a.c
 {
     public class DoThing<T>
     {

@@ -1,3 +1,0 @@
-﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
-  <Import Project="..\build\net5.0\TS.CodeGenerator.MSBuildTasks.props" />
-</Project>

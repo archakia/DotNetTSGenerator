@@ -7,7 +7,4 @@ namespace lib.test.a.b
         public string Name { get; set; }
         public DoThing<string> MyThing { get; set; }
     }
-
-   
 }
-

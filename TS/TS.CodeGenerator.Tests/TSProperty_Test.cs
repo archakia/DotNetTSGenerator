@@ -19,7 +19,7 @@ namespace TS.CodeGenerator.tests
         NoSay
     }
 
-    public class testClass1<T>:GenericObj<Guid>
+    public class testClass1<T> : GenericObj<Guid>
     {
         public string Prop1 { get; set; }
         public int Prop2 { get; set; }
@@ -55,7 +55,7 @@ namespace TS.CodeGenerator.tests
         public T Prop11_1;
         public IEnumerable<T> Prop12_1;
         public Sex Prop13_1;
-        public Dictionary<string,bool> Prop14_1;
+        public Dictionary<string, bool> Prop14_1;
     }
 
     public class BigClassInherited : IInterfaceClass
@@ -77,6 +77,7 @@ namespace TS.CodeGenerator.tests
     {
         int Prop1 { get; set; }
     }
+
     public interface Idictclass
     {
         Dictionary<string, bool> frank { get; }
@@ -88,10 +89,10 @@ namespace TS.CodeGenerator.tests
         [Fact]
         public void TestSimpleProperty()
         {
-
             //arrange
             var c = typeof(testClass1<>);
             var prop = new TSProperty(c.GetTypeInfo().GetProperties()[0], (t) => "string");
+
             prop.Initialize();
 
             //act
@@ -104,11 +105,11 @@ namespace TS.CodeGenerator.tests
         [Fact]
         public void TestDictClass()
         {
-
             //arrange
             var c = typeof(Idictclass);
             var gen = new TSGenerator();
             var prop = new TSInterface(c, gen.GenerateLookupTypeName);
+
             prop.Initialize();
 
             //act
@@ -118,15 +119,13 @@ namespace TS.CodeGenerator.tests
             Assert.True(!string.IsNullOrEmpty(res));
         }
 
-
-
         [Fact]
         public void TestSimpleClass()
         {
-
             //arrange
             var c = typeof(testClass1<>);
             var prop = new TSInterface(c, (t) => "string");
+
             prop.Initialize();
 
             //act
@@ -139,7 +138,6 @@ namespace TS.CodeGenerator.tests
         [Fact]
         public void TestSimpleGenerator()
         {
-
             //arrange
             Settings.ConstEnumsEnabled = true;
             var c = typeof(testClass1<>);
@@ -153,14 +151,12 @@ namespace TS.CodeGenerator.tests
             Assert.False(string.IsNullOrEmpty(res));
         }
 
-
         [Fact]
         public void TestSimpleAssemblyReader()
         {
-
             //arrange
             Settings.ConstEnumsEnabled = true;
-            
+
             var reader = new AssemblyReader();
 
             var a = typeof(DoThing<>).Assembly;
@@ -174,9 +170,5 @@ namespace TS.CodeGenerator.tests
             //assert
             Assert.True(!string.IsNullOrEmpty(res));
         }
-
-
-
-
     }
 }

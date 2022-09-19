@@ -1,7 +1,4 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
-
-namespace lib.test.a.b
+﻿namespace lib.test.a.b
 {
     public interface IShouldNotShowUp
     {

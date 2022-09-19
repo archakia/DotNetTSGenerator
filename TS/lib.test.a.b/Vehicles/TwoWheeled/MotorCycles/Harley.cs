@@ -1,4 +1,4 @@
-﻿namespace lib.test.a.b.Vehicals.TwoWheeled.MotorCycles
+﻿namespace lib.test.a.b.Vehicles.TwoWheeled.MotorCycles
 {
     public class Harley<T> : IHog<T>
     {
@@ -8,7 +8,7 @@
 
     public enum Trim
     {
-        Chome,
+        Chrome,
         Matte
     }
 

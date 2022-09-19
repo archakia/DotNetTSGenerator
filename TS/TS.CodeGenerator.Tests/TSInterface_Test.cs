@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Xunit;
 
 namespace TS.CodeGenerator.tests
 {
@@ -12,32 +10,32 @@ namespace TS.CodeGenerator.tests
 
     public class TestGenerics<T>
     {
-        public IEnumerable<T> Items { get; set; } 
+        public IEnumerable<T> Items { get; set; }
     }
 
-  
-    [TestClass]
-    public class TSInterfact_test
+    public class TSInterface_Test
     {
-        [TestMethod]
+        [Fact]
         public void Test_InterfaceGenerics()
         {
             //arrange
-              var gen = new TSInterface(typeof (ITestGenerics<>), (t) =>
-              {
-                  if (t.IsGenericParameter)
-                      return t.Name;
-                  return Settings.StartingTypeMap[t];
-              });
+            var gen = new TSInterface(typeof(ITestGenerics<>), (t) =>
+            {
+                if (t.IsGenericParameter)
+                    return t.Name;
+                return Settings.StartingTypeMap[t];
+            });
+
             gen.Initialize();
+
             //act
             var res = gen.ToTSString();
 
             //assert
-            Assert.IsTrue(res.Contains("interface ITestGenerics<T>"));
+            Assert.Contains("interface ITestGenerics<T>", res);
         }
 
-        [TestMethod]
+        [Fact]
         public void Test_ClassGenerics()
         {
             //arrange
@@ -47,17 +45,15 @@ namespace TS.CodeGenerator.tests
                     return "T[]";
                 return Settings.StartingTypeMap[t];
             });
+
             gen.Initialize();
+
             //act
             var res = gen.ToTSString();
 
             //assert
-            Assert.IsTrue(res.Contains("interface ITestGenerics<T>"));
-            Assert.IsTrue(res.Contains("Items: T[];"));
+            Assert.Contains("interface ITestGenerics<T>", res);
+            Assert.Contains("Items: T[];", res);
         }
-
-       
-
-
     }
 }

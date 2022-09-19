@@ -1,8 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -22,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\lib.test.a.b\lib.test.a.b.csproj" />
     <ProjectReference Include="..\lib.test.a.c\lib.test.a.c.csproj" />
-    <ProjectReference Include="..\TS.CodeGenerator.Core\TS.CodeGenerator.csproj" />
+    <ProjectReference Include="..\TS.CodeGenerator\TS.CodeGenerator.csproj" />
   </ItemGroup>
 
 </Project>
