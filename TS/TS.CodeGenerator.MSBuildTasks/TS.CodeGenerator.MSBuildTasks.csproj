@@ -12,7 +12,7 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
 
     <!-- Change the default location where NuGet will put the build output -->
-    <!--<BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>-->
+    <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
 
     <!-- BS that needs to exist-->
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
@@ -23,6 +23,12 @@
       <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
+
+  <ItemGroup>
+    <!-- Pack the props files -->
+    <Content Include="build\net6.0\TS.CodeGenerator.MSBuildTasks.props" PackagePath="build\net6.0\" />
+    <Content Include="buildMultiTargeting\TS.CodeGenerator.MSBuildTasks.props" PackagePath="buildMultiTargeting\" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="17.3.1" />

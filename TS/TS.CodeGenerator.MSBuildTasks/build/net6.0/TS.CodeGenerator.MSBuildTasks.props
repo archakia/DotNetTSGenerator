@@ -1,0 +1,13 @@
+﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly" InitialTargets="Text_TS">
+
+  <PropertyGroup>
+    <TaskFolder Condition="'$(MSBuildRuntimeType)' == 'Core' And '$(MSBuildToolsVersion)' == 'Current'">net6.0</TaskFolder>
+    <TaskAssembly>$(MSBuildThisFileDirectory)..\..\tasks\$(TaskFolder)\TS.CodeGenerator.MSBuildTasks.dll</TaskAssembly>
+  </PropertyGroup>
+  <Target Name="Text_TS">
+    <Message Text="Loading $(TaskAssembly)" Importance="high"></Message>
+    <Message Text="MSBuildRuntimeType = $(MSBuildRuntimeType) and MSBuildToolsVersion = $(MSBuildToolsVersion)" Importance="high"></Message>
+  </Target>
+  <UsingTask TaskName="GenerateTypescriptTask" AssemblyFile="$(TaskAssembly)" Condition="'$(TaskAssembly)' != ''" />
+
+</Project>

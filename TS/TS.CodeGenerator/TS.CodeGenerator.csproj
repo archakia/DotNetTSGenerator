@@ -12,7 +12,6 @@
     <Authors>Max Fridberg</Authors>
     <Product>TS.CodeGenerator</Product>
     <PackageProjectUrl>https://github.com/maxfridbe/DotNetTSGenerator</PackageProjectUrl>
-    <IsTool>true</IsTool>
   </PropertyGroup>
 
 </Project>
