@@ -1,7 +1,6 @@
-﻿using System.IO;
+﻿using Microsoft.Build.Utilities;
+using System.IO;
 using System.Reflection;
-using Microsoft.Build.Framework;
-using Microsoft.Build.Utilities;
 
 namespace TS.CodeGenerator.MSBuildTasks
 {
@@ -12,11 +11,11 @@ namespace TS.CodeGenerator.MSBuildTasks
 
         public override bool Execute()
         {
-            Log.LogMessage(MessageImportance.High, $"Input dll path: '{InputDLL}'");
+            Log.LogMessage($"Input dll path: '{InputDLL}'");
 
             Settings.MethodReturnTypeFormatString = "{0}";
             string inputFolder = Path.GetDirectoryName(InputDLL);
-            
+
             Assembly asm = Assembly.LoadFrom(InputDLL);
 
             string[] files = Directory.GetFiles(inputFolder, "*.dll");
@@ -43,7 +42,7 @@ namespace TS.CodeGenerator.MSBuildTasks
                 }
             }
 
-            Log.LogMessage(MessageImportance.High, $"Generated TS to path '{OutputDTS}'.");
+            Log.LogMessage($"Generated TS to path '{OutputDTS}'.");
 
             return true;
         }

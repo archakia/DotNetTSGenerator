@@ -1,41 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.1.0</Version>
+    <GenerateDependencyFile>true</GenerateDependencyFile>
+    <Version>1.0.1.1</Version>
     <Authors>Max Fridberg</Authors>
     <RepositoryUrl>https://github.com/maxfridbe/DotNetTSGenerator</RepositoryUrl>
     <Description>A continuation of the TS.CodeGenerator package providing targets for consumption of the code generator using MSBuild</Description>
 
-    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
-    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <!-- This target will run when MSBuild is collecting the files to be packaged, and we'll implement it below. This property controls the 
+    dependency list for this packaging process, so by adding our custom property we hook ourselves into the process in a supported way. -->
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 
     <!-- Change the default location where NuGet will put the build output -->
     <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
 
-    <!-- BS that needs to exist-->
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
+    <NoPackageAnalysis>true</NoPackageAnalysis>
   </PropertyGroup>
-  
-  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+
+  <!-- This target adds the task .dll and dependent local project .dlls to our package output -->
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+      <!-- The TargetPath is the path inside the package that the source file will be placed. This is already precomputed in the ReferenceCopyLocalPaths items' DestinationSubPath, so reuse it here. -->
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" TargetPath="%(ReferenceCopyLocalPaths.DestinationSubPath)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- This target adds the generated deps.json file to our package output -->
+  <Target Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput" BeforeTargets="BuiltProjectOutputGroup" Condition=" '$(GenerateDependencyFile)' == 'true'">
+    <ItemGroup>
+      <BuiltProjectOutputGroupOutput Include="$(ProjectDepsFilePath)" TargetPath="$(ProjectDepsFileName)" FinalOutputPath="$(ProjectDepsFilePath)" />
     </ItemGroup>
   </Target>
 
   <ItemGroup>
     <!-- Pack the props files -->
-    <Content Include="build\net6.0\TS.CodeGenerator.MSBuildTasks.props" PackagePath="build\net6.0\" />
-    <Content Include="buildMultiTargeting\TS.CodeGenerator.MSBuildTasks.props" PackagePath="buildMultiTargeting\" />
+    <Content Include="build\TS.CodeGenerator.MSBuildTasks.props" PackagePath="build/" />
+    <Content Include="buildMultiTargeting/TS.CodeGenerator.MSBuildTasks.props" PackagePath="buildMultiTargeting/" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="17.3.1" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.3.1" />
-    <PackageReference Include="System.Runtime" Version="4.3.1" />
-    
-    <PackageReference Update="@(PackageReference)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.3.1" PrivateAssets="All" ExcludeAssets="Runtime" />
   </ItemGroup>
 
   <ItemGroup>

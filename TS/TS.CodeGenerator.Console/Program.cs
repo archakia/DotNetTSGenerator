@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 
@@ -12,12 +13,13 @@ namespace TS.CodeGenerator.Console
             string output = Path.GetFullPath(args[1]);
             string inputFolder = Path.GetDirectoryName(input);
 
-            System.Console.WriteLine($"Input Path {input}");
-            System.Console.WriteLine($"Output Path {output}");
+            System.Console.WriteLine($"Input path: '{input}'");
+            System.Console.WriteLine($"Output path: '{output}'");
             if (!File.Exists(input))
             {
-                System.Console.Error.WriteLine($"Could Not Find input {input}");
-                return;
+                string message = $"Could not find input: '{input}'";
+                System.Console.Error.WriteLine(message);
+                throw new ArgumentException(message);
             }
 
             Settings.MethodReturnTypeFormatString = "{0}";
@@ -47,8 +49,7 @@ namespace TS.CodeGenerator.Console
                 }
             }
 
-            System.Console.WriteLine("...");
-            System.Console.WriteLine("Completed");
+            System.Console.WriteLine("Typescript generation completed!");
         }
     }
 }
