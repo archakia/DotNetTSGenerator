@@ -7,7 +7,6 @@ namespace TS.CodeGenerator.tests
     interface MyClass<T>
     {
         T GetT(T input);
-
         IEnumerable<int> data { get; set; }
     }
 
@@ -20,8 +19,6 @@ namespace TS.CodeGenerator.tests
     {
         public IEnumerable<T> GenericList { get; set; }
     }
-
-    
 
     public class GenericParameter_Test
     {
@@ -39,6 +36,7 @@ namespace TS.CodeGenerator.tests
             //assert
             Assert.Contains("GetT?(input:T/*T*/):JQueryPromise<T>;", res);
         }
+
         [Fact]
         public void TestGenericProperty()
         {
@@ -53,6 +51,7 @@ namespace TS.CodeGenerator.tests
             //assert
             Assert.Contains("GenericList: T[];", res);
         }
+
         [Fact]
         public void TestGenericPropertyClass()
         {
@@ -67,7 +66,6 @@ namespace TS.CodeGenerator.tests
             //assert
             Assert.Contains("GenericList: T[];", res);
         }
-    
 
         [Fact]
         public void Fact2()

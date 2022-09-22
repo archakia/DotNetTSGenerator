@@ -9,44 +9,47 @@ namespace TS.CodeGenerator.Console
     {
         static void Main(string[] args)
         {
-            var input = Path.GetFullPath(args[0]);
-            var output = Path.GetFullPath(args[1]);
-            var inputFolder = Path.GetDirectoryName(input);
+            string input = Path.GetFullPath(args[0]);
+            string output = Path.GetFullPath(args[1]);
+            string inputFolder = Path.GetDirectoryName(input);
 
-            System.Console.WriteLine($"Input Path {input}");
-            System.Console.WriteLine($"Output Path {output}");
+            System.Console.WriteLine($"Input path: '{input}'");
+            System.Console.WriteLine($"Output path: '{output}'");
             if (!File.Exists(input))
             {
-                System.Console.Error.WriteLine($"Could Not Find input {input}");
-                return;
+                string message = $"Could not find input: '{input}'";
+                System.Console.Error.WriteLine(message);
+                throw new ArgumentException(message);
             }
 
             Settings.MethodReturnTypeFormatString = "{0}";
             Assembly asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(input);
-            
-            var files = Directory.GetFiles(inputFolder, "*.dll");
-            foreach (var file in files)
+
+            string[] files = Directory.GetFiles(inputFolder, "*.dll");
+            foreach (string file in files)
             {
                 AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
             }
 
-            var reader = new AssemblyReader();
+            AssemblyReader reader = new AssemblyReader();
             reader.AddAssembly(asm);
 
             if (File.Exists(output))
             {
                 File.Delete(output);
             }
-            using (var of = File.OpenWrite(output))
-            using (var sw = new StreamWriter(of))
-            {
-                var types = reader.GenerateTypingsString();
-                // sw.WriteLine(@"/// <reference path=""../jquery/jquery.d.ts"" />");
-                sw.WriteLine(types);
 
+            using (var outputFile = File.OpenWrite(output))
+            {
+                using (var streamWriter = new StreamWriter(outputFile))
+                {
+                    string types = reader.GenerateTypingsString();
+                    // sw.WriteLine(@"/// <reference path=""../jquery/jquery.d.ts"" />");
+                    streamWriter.WriteLine(types);
+                }
             }
-            System.Console.WriteLine("...");
-            System.Console.WriteLine("Completed");
+
+            System.Console.WriteLine("Typescript generation completed!");
         }
     }
 }

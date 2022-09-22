@@ -1,0 +1,15 @@
+﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly" InitialTargets="Text_TS">
+
+  <PropertyGroup>
+    <TaskFolder>$(MSBuildThisFileDirectory)..\tasks\netstandard2.0</TaskFolder>
+    <TaskAssembly>$(TaskFolder)\$(MSBuildThisFileName).dll</TaskAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="GenerateTypescriptTask" AssemblyFile="$(TaskAssembly)" Condition="'$(TaskAssembly)' != ''" />
+  
+  <Target Name="Text_TS">
+    <Message Text="Loading $(TaskAssembly)" Importance="high"></Message>
+    <Message Text="MSBuildRuntimeType = $(MSBuildRuntimeType) and MSBuildToolsVersion = $(MSBuildToolsVersion)" Importance="high"></Message>
+  </Target>
+
+</Project>
