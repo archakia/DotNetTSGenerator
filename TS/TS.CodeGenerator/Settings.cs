@@ -50,6 +50,49 @@ namespace TS.CodeGenerator
             IgnoreInterfaces = new List<string>();
         }
 
+        public static void OverwriteDefaults(ISettings set)
+        {
+            if (!string.IsNullOrEmpty(set.Indentation))
+            {
+                Indentation = set.Indentation;
+            }
+            if (!string.IsNullOrEmpty(set.MethodReturnTypeFormatString))
+            {
+                MethodReturnTypeFormatString = set.MethodReturnTypeFormatString;
+            }
+            if (!string.IsNullOrEmpty(set.InterfaceFormat))
+            {
+                InterfaceFormat = set.InterfaceFormat;
+            }
+            if (!string.IsNullOrEmpty(set.EndOfLine))
+            {
+                EndOfLine = set.EndOfLine;
+            }
+            if (!string.IsNullOrEmpty(set.DictionaryFormat))
+            {
+                DictionaryFormat = set.DictionaryFormat;
+            }
+            if (!string.IsNullOrEmpty(set.PrependText))
+            {
+                PrependText = set.PrependText;
+            }
+            if (!string.IsNullOrEmpty(set.PostpendText))
+            {
+                PostpendText = set.PostpendText;
+            }
+
+            if (set.MakeMethodsOptional.HasValue)
+            {
+                MakeMethodsOptional = set.MakeMethodsOptional.Value;
+            }
+            if (set.ConstEnumsEnabled.HasValue)
+            {
+                ConstEnumsEnabled = set.ConstEnumsEnabled.Value;
+            }
+        }
+
+public static string PrependText{get;set;}
+public static string PostpendText{get;set;}
         public static string Indentation { get; set; }
         public static string MethodReturnTypeFormatString { get; set; }
         public static bool MakeMethodsOptional { get; set; }

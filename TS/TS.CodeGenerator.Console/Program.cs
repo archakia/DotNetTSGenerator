@@ -2,9 +2,11 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Text.Json;
 
 namespace TS.CodeGenerator.Console
 {
+
     class Program
     {
         static void Main(string[] args)
@@ -12,6 +14,8 @@ namespace TS.CodeGenerator.Console
             string input = Path.GetFullPath(args[0]);
             string output = Path.GetFullPath(args[1]);
             string inputFolder = Path.GetDirectoryName(input);
+
+
 
             System.Console.WriteLine($"Input path: '{input}'");
             System.Console.WriteLine($"Output path: '{output}'");
@@ -21,8 +25,18 @@ namespace TS.CodeGenerator.Console
                 System.Console.Error.WriteLine(message);
                 throw new ArgumentException(message);
             }
-
+            
             Settings.MethodReturnTypeFormatString = "{0}";
+
+            if (args.Length == 3 && File.Exists(args[2]))
+            {
+                string settingsFile = Path.GetFullPath(args[2]);
+
+                var s = File.ReadAllText(settingsFile);
+                var o = JsonSerializer.Deserialize<OverrideSettings>(s)!;
+                Settings.OverwriteDefaults(o);
+            }
+
             Assembly asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(input);
 
             string[] files = Directory.GetFiles(inputFolder, "*.dll");
@@ -44,8 +58,9 @@ namespace TS.CodeGenerator.Console
                 using (var streamWriter = new StreamWriter(outputFile))
                 {
                     string types = reader.GenerateTypingsString();
-                    // sw.WriteLine(@"/// <reference path=""../jquery/jquery.d.ts"" />");
+                    streamWriter.WriteLine(Settings.PrependText);
                     streamWriter.WriteLine(types);
+                    streamWriter.WriteLine(Settings.PostpendText);
                 }
             }
 

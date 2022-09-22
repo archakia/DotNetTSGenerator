@@ -1,6 +1,7 @@
 ﻿using Microsoft.Build.Utilities;
 using System.IO;
 using System.Reflection;
+using System.Text.Json;
 
 namespace TS.CodeGenerator.MSBuildTasks
 {
@@ -8,6 +9,7 @@ namespace TS.CodeGenerator.MSBuildTasks
     {
         public string InputDLL { get; set; }
         public string OutputDTS { get; set; }
+        public string SettingsJson { get; set; }
 
         public override bool Execute()
         {
@@ -15,6 +17,19 @@ namespace TS.CodeGenerator.MSBuildTasks
 
             Settings.MethodReturnTypeFormatString = "{0}";
             string inputFolder = Path.GetDirectoryName(InputDLL);
+
+
+            if (!string.IsNullOrWhiteSpace(SettingsJson))
+            {
+                string settingsFile = Path.GetFullPath(SettingsJson);
+
+                Log.LogMessage($"Using generation settings override {settingsFile}");
+
+                var s = File.ReadAllText(settingsFile);
+                var x = new JsonParser().Parse<OverrideSettings>(s);
+                Settings.OverwriteDefaults(x);
+            }
+
 
             Assembly asm = Assembly.LoadFrom(InputDLL);
 
@@ -37,8 +52,9 @@ namespace TS.CodeGenerator.MSBuildTasks
                 using (var streamWriter = new StreamWriter(outputFile))
                 {
                     string types = reader.GenerateTypingsString();
-                    // sw.WriteLine(@"/// <reference path=""../jquery/jquery.d.ts"" />");
+                    streamWriter.WriteLine(Settings.PrependText);
                     streamWriter.WriteLine(types);
+                    streamWriter.WriteLine(Settings.PostpendText);
                 }
             }
 

@@ -9,15 +9,22 @@ Simply add both TS.CodeGenerator and TS.CodeGenerator.Console Nuget packages to 
 
 TODO: Get the MSBuildTargets project working if an explicit MSBuild target in one "fat" NuGet package is desirable.
 After adding both TS.CodeGenerator and TS.CodeGenerator.MSBuildTargets Nuget packages to your project, add this target to to your .csproj:
-```
+```xml
 <Target Name="RunGenerateTypescriptTask" AfterTargets="Build">
       <GenerateTypescriptTask InputDLL="$(MSBuildThisFileDirectory)bin\debug\net6.0\aaa.dll" OutputDTS="..\out.d.ts"/>
 </Target>
 ```
 
 Be sure to modify the InputDLL and OutputDTS values to match your project's needs!
-END TODO
 
+Optional set a "OverrideSettings"="$(MSBuildThisFileDirectory)\settings.json" with settings like:
+```json
+{
+    "MethodReturnTypeFormatString" : "Promise<{0}>",
+    "MakeMethodsOptional": false
+}
+```
+(To see possible values see: OverrideSettings.cs [https://github.com/maxfridbe/DotNetTSGenerator/blob/master/TS/TS.CodeGenerator.MSBuildTasks/OverrideSettings.cs])
 
 Rationale
 ----------
