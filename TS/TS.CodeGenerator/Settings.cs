@@ -50,49 +50,48 @@ namespace TS.CodeGenerator
             IgnoreInterfaces = new List<string>();
         }
 
-        public static void OverwriteDefaults(ISettings set)
+        public static void OverwriteDefaults(ISettings settings)
         {
-            if (!string.IsNullOrEmpty(set.Indentation))
+            if (!string.IsNullOrEmpty(settings.Indentation))
             {
-                Indentation = set.Indentation;
+                Indentation = settings.Indentation;
             }
-            if (!string.IsNullOrEmpty(set.MethodReturnTypeFormatString))
+            if (!string.IsNullOrEmpty(settings.MethodReturnTypeFormatString))
             {
-                MethodReturnTypeFormatString = set.MethodReturnTypeFormatString;
+                MethodReturnTypeFormatString = settings.MethodReturnTypeFormatString;
             }
-            if (!string.IsNullOrEmpty(set.InterfaceFormat))
+            if (!string.IsNullOrEmpty(settings.InterfaceFormat))
             {
-                InterfaceFormat = set.InterfaceFormat;
+                InterfaceFormat = settings.InterfaceFormat;
             }
-            if (!string.IsNullOrEmpty(set.EndOfLine))
+            if (!string.IsNullOrEmpty(settings.EndOfLine))
             {
-                EndOfLine = set.EndOfLine;
+                EndOfLine = settings.EndOfLine;
             }
-            if (!string.IsNullOrEmpty(set.DictionaryFormat))
+            if (!string.IsNullOrEmpty(settings.DictionaryFormat))
             {
-                DictionaryFormat = set.DictionaryFormat;
+                DictionaryFormat = settings.DictionaryFormat;
             }
-            if (!string.IsNullOrEmpty(set.PrependText))
+            if (!string.IsNullOrEmpty(settings.PrependText))
             {
-                PrependText = set.PrependText;
+                PrependText = settings.PrependText;
             }
-            if (!string.IsNullOrEmpty(set.PostpendText))
+            if (!string.IsNullOrEmpty(settings.PostpendText))
             {
-                PostpendText = set.PostpendText;
+                PostpendText = settings.PostpendText;
             }
-
-            if (set.MakeMethodsOptional.HasValue)
+            if (settings.MakeMethodsOptional.HasValue)
             {
-                MakeMethodsOptional = set.MakeMethodsOptional.Value;
+                MakeMethodsOptional = settings.MakeMethodsOptional.Value;
             }
-            if (set.ConstEnumsEnabled.HasValue)
+            if (settings.ConstEnumsEnabled.HasValue)
             {
-                ConstEnumsEnabled = set.ConstEnumsEnabled.Value;
+                ConstEnumsEnabled = settings.ConstEnumsEnabled.Value;
             }
         }
 
-public static string PrependText{get;set;}
-public static string PostpendText{get;set;}
+        public static string PrependText { get; set; }
+        public static string PostpendText { get; set; }
         public static string Indentation { get; set; }
         public static string MethodReturnTypeFormatString { get; set; }
         public static bool MakeMethodsOptional { get; set; }

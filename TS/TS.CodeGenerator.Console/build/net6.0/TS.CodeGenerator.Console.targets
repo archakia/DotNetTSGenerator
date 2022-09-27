@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <InvocationCommandLine >dotnet "$(MSBuildThisFileDirectory)../../content/TS.CodeGenerator.Console/TS.CodeGenerator.Console.dll"</InvocationCommandLine>
-    <InputDLL>$(OutputPath)$(AssemblyName).dll</InputDLL>
-    <OutputDTS>$(AssemblyName).d.ts</OutputDTS>
-    <OverrideSettings>$(OverrideSettingsFile)</OverrideSettings>
+    <InputDLL>"$(OutputPath)$(AssemblyName).dll"</InputDLL>
+    <OutputDTS>"$(AssemblyName).d.ts"</OutputDTS>
+    <OverrideSettingsFilePath>"$(MSBuildProjectDirectory)/TSGeneratorSettings.json"</OverrideSettingsFilePath>
   </PropertyGroup>
 
   <Target Name="GenerateTypescript" AfterTargets="Build">
-    <Exec Command="$(InvocationCommandLine) $(InputDLL) $(OutputDTS) $(OverrideSettings)" />
+    <Exec Command="$(InvocationCommandLine) $(InputDLL) $(OutputDTS) $(OverrideSettingsFilePath)" />
   </Target>
 
 </Project>

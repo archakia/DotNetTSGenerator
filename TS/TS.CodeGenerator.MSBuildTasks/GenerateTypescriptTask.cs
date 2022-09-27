@@ -1,4 +1,5 @@
 ﻿using Microsoft.Build.Utilities;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
@@ -9,7 +10,7 @@ namespace TS.CodeGenerator.MSBuildTasks
     {
         public string InputDLL { get; set; }
         public string OutputDTS { get; set; }
-        public string SettingsJson { get; set; }
+        public string OverrideSettingsFilePath { get; set; }
 
         public override bool Execute()
         {
@@ -18,18 +19,21 @@ namespace TS.CodeGenerator.MSBuildTasks
             Settings.MethodReturnTypeFormatString = "{0}";
             string inputFolder = Path.GetDirectoryName(InputDLL);
 
-
-            if (!string.IsNullOrWhiteSpace(SettingsJson))
+            if (!string.IsNullOrWhiteSpace(OverrideSettingsFilePath))
             {
-                string settingsFile = Path.GetFullPath(SettingsJson);
+                string settingsFilePath = Path.GetFullPath(OverrideSettingsFilePath);
 
-                Log.LogMessage($"Using generation settings override {settingsFile}");
+                Log.LogMessage($"Using overridden generator settings from file: '{settingsFilePath}'");
 
-                var s = File.ReadAllText(settingsFile);
-                var x = new JsonParser().Parse<OverrideSettings>(s);
-                Settings.OverwriteDefaults(x);
+                string settingsFileContent = File.ReadAllText(settingsFilePath);
+                OverrideSettings overrideSettings = JsonSerializer.Deserialize<OverrideSettings>(settingsFileContent);
+                if (overrideSettings == null)
+                {
+                    throw new ArgumentNullException("The provided serialized settings object was empty.");
+                }
+
+                Settings.OverwriteDefaults(overrideSettings);
             }
-
 
             Assembly asm = Assembly.LoadFrom(InputDLL);
 
@@ -52,9 +56,7 @@ namespace TS.CodeGenerator.MSBuildTasks
                 using (var streamWriter = new StreamWriter(outputFile))
                 {
                     string types = reader.GenerateTypingsString();
-                    streamWriter.WriteLine(Settings.PrependText);
                     streamWriter.WriteLine(types);
-                    streamWriter.WriteLine(Settings.PostpendText);
                 }
             }
 

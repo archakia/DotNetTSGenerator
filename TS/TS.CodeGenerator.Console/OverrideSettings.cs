@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace TS.CodeGenerator.Console
 {
-    class OverrideSettings : ISettings
+    public class OverrideSettings : ISettings
     {
-        public string Indentation { get;set; }
+        public string Indentation { get; set; }
         public string MethodReturnTypeFormatString { get; set; }
         public bool? MakeMethodsOptional { get; set; }
         public bool? FollowExternalAssemblies { get; set; }

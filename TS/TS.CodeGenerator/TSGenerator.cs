@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace TS.CodeGenerator
 {
@@ -204,18 +205,35 @@ namespace TS.CodeGenerator
 
         public string ToTSString()
         {
+            StringBuilder stringBuilder = new StringBuilder();
+
             var interfaces = _interfaceMap.Values
-                .Where(i => !i.IsGenericMetaClass && !string.IsNullOrWhiteSpace(i.FullName))//bob<string>, vs bob<T>
+                .Where(i => !i.IsGenericMetaClass && !string.IsNullOrWhiteSpace(i.FullName)) //bob<string>, vs bob<T>
                 .Distinct(new InterfaceComparer())
                 .ToList();
 
-
             var strs = interfaces.Where(i => !Settings.IgnoreInterfaces.Contains(i.InterFaceName)).Select(v => v.ToTSString());
             var ints = string.Join(Settings.EndOfLine, strs);
-
             var enums = string.Join(Settings.EndOfLine, _enumerationsMap.Values.Select(en => en.ToTSString()));
 
-            return ints + Settings.EndOfLine + enums;
+            if (!string.IsNullOrWhiteSpace(Settings.PrependText))
+            {
+                stringBuilder.Append(Settings.PrependText);
+                stringBuilder.Append(Settings.EndOfLine);
+            }
+
+            stringBuilder.Append(ints);
+            stringBuilder.Append(Settings.EndOfLine);
+            stringBuilder.Append(enums);
+
+            if (!string.IsNullOrWhiteSpace(Settings.PostpendText))
+            {
+                stringBuilder.Append(Settings.EndOfLine);
+                stringBuilder.Append(Settings.PostpendText);
+                stringBuilder.Append(Settings.EndOfLine);
+            }
+
+            return stringBuilder.ToString();
         }
 
         static bool IsGenericEnumerable(Type t)
