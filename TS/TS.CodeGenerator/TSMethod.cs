@@ -24,7 +24,6 @@ namespace TS.CodeGenerator
             Parameters = _mi.GetParameters().Select(p => new TSParameter(p, _mapType)).ToList();
 
             MethodName = _mi.Name;
-
         }
 
         public void Initialize()

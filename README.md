@@ -5,9 +5,22 @@ This will build a d.ts file from a .net assembly.
 
 Simply add both TS.CodeGenerator and TS.CodeGenerator.Console Nuget packages to your project, and the built-in MSBuild target will generate a .d.ts file at the root of your project folder after the project is built.
 [https://www.nuget.org/packages/TS.CodeGenerator]
+
 [https://www.nuget.org/packages/TS.CodeGenerator.Console]
 
+Optionally, consumers can provide a serialized settings object in a file to alter generator behavior. Add a file named "TSGeneratorSettings.json" to the root of your consuming project with content similar to:
+```json
+{
+    "MethodReturnTypeFormatString" : "Promise<{0}>",
+    "MakeMethodsOptional": false
+}
+```
+Possible values are defined in the OverrideSettings class (see OverrideSettings.cs [https://github.com/maxfridbe/DotNetTSGenerator/blob/master/TS/TS.CodeGenerator.MSBuildTasks/OverrideSettings.cs])
+
+
+
 TODO: Get the MSBuildTargets project working if an explicit MSBuild target in one "fat" NuGet package is desirable.
+
 After adding both TS.CodeGenerator and TS.CodeGenerator.MSBuildTargets Nuget packages to your project, add this target to to your .csproj:
 ```xml
 <Target Name="RunGenerateTypescriptTask" AfterTargets="Build">
@@ -17,14 +30,7 @@ After adding both TS.CodeGenerator and TS.CodeGenerator.MSBuildTargets Nuget pac
 
 Be sure to modify the InputDLL and OutputDTS values to match your project's needs!
 
-Optional set a "OverrideSettings"="$(MSBuildThisFileDirectory)\settings.json" with settings like:
-```json
-{
-    "MethodReturnTypeFormatString" : "Promise<{0}>",
-    "MakeMethodsOptional": false
-}
-```
-(To see possible values see: OverrideSettings.cs [https://github.com/maxfridbe/DotNetTSGenerator/blob/master/TS/TS.CodeGenerator.MSBuildTasks/OverrideSettings.cs])
+END TODO
 
 Rationale
 ----------
