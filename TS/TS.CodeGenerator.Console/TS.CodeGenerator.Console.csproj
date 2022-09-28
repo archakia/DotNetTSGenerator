@@ -8,7 +8,7 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     
-    <Version>1.0.1.3</Version>
+    <Version>1.0.1.4</Version>
     <Authors>Max Fridberg</Authors>
     <RepositoryUrl>https://github.com/maxfridbe/DotNetTSGenerator</RepositoryUrl>
     <Description>A continuation of the TS.CodeGenerator package providing a console runner of the code generator using MSBuild</Description>
@@ -19,11 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="build\net6.0\TS.CodeGenerator.Console.targets" PackagePath="build\net6.0\" />
-    <Content Include="bin\Debug\net6.0\*.*">
+    <Content Include="build/net6.0/TS.CodeGenerator.Console.targets" PackagePath="build/net6.0/" />
+    <Content Include="bin/Debug/net6.0/*.*">
       <Pack>true</Pack>
       <PackageCopyToOutput>false</PackageCopyToOutput>
-      <PackagePath>\content\TS.CodeGenerator.Console</PackagePath>
+      <PackagePath>/content/TS.CodeGenerator.Console/</PackagePath>
       <Visible>false</Visible>
     </Content>
   </ItemGroup>
