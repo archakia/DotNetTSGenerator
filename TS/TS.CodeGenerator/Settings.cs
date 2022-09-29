@@ -5,15 +5,33 @@ namespace TS.CodeGenerator
 {
     public static class Settings
     {
+        public static string Indentation { get; set; }
+        public static string EndOfLine { get; set; }
+        public static string InterfaceFormat { get; set; }
+        public static string MethodReturnTypeFormatString { get; set; }
+        public static string DictionaryFormat { get; set; }
+        public static string PrependText { get; set; }
+        public static string PostpendText { get; set; }
+
+        public static bool MakeMethodsOptional { get; set; }
+        public static bool ConstEnumsEnabled { get; set; }
+
+        public static Dictionary<Type, string> StartingTypeMap { get; set; }
+        public static List<string> IgnoreInterfaces { get; set; }
+
         static Settings()
         {
-            MakeMethodsOptional = true;
-            //FollowExternalAssemblies = false;
-            EndOfLine = "\r\n";
             Indentation = "\t";
+            EndOfLine = "\r\n";
             InterfaceFormat = "I{0}";
             MethodReturnTypeFormatString = "JQueryPromise<{0}>";
             DictionaryFormat = "IDictionary<{0}, {1}>";
+            PrependText = String.Empty;
+            PostpendText = String.Empty;
+
+            MakeMethodsOptional = true;
+            ConstEnumsEnabled = false;
+
             StartingTypeMap = new Dictionary<Type, string>
             {
                 {typeof (string), Types.String},
@@ -52,34 +70,35 @@ namespace TS.CodeGenerator
 
         public static void OverwriteDefaults(ISettings settings)
         {
-            if (!string.IsNullOrEmpty(settings.Indentation))
+            if (settings.Indentation != null)
             {
                 Indentation = settings.Indentation;
             }
-            if (!string.IsNullOrEmpty(settings.MethodReturnTypeFormatString))
-            {
-                MethodReturnTypeFormatString = settings.MethodReturnTypeFormatString;
-            }
-            if (!string.IsNullOrEmpty(settings.InterfaceFormat))
-            {
-                InterfaceFormat = settings.InterfaceFormat;
-            }
-            if (!string.IsNullOrEmpty(settings.EndOfLine))
+            if (settings.EndOfLine != null)
             {
                 EndOfLine = settings.EndOfLine;
             }
-            if (!string.IsNullOrEmpty(settings.DictionaryFormat))
+            if (settings.InterfaceFormat != null)
+            {
+                InterfaceFormat = settings.InterfaceFormat;
+            }
+            if (settings.MethodReturnTypeFormatString != null)
+            {
+                MethodReturnTypeFormatString = settings.MethodReturnTypeFormatString;
+            }
+            if (settings.DictionaryFormat != null)
             {
                 DictionaryFormat = settings.DictionaryFormat;
             }
-            if (!string.IsNullOrEmpty(settings.PrependText))
+            if (settings.PrependText != null)
             {
                 PrependText = settings.PrependText;
             }
-            if (!string.IsNullOrEmpty(settings.PostpendText))
+            if (settings.PostpendText != null)
             {
                 PostpendText = settings.PostpendText;
             }
+
             if (settings.MakeMethodsOptional.HasValue)
             {
                 MakeMethodsOptional = settings.MakeMethodsOptional.Value;
@@ -88,19 +107,18 @@ namespace TS.CodeGenerator
             {
                 ConstEnumsEnabled = settings.ConstEnumsEnabled.Value;
             }
-        }
 
-        public static string PrependText { get; set; }
-        public static string PostpendText { get; set; }
-        public static string Indentation { get; set; }
-        public static string MethodReturnTypeFormatString { get; set; }
-        public static bool MakeMethodsOptional { get; set; }
-        //  public static bool FollowExternalAssemblies { get; set; }
-        public static Dictionary<Type, string> StartingTypeMap { get; set; }
-        public static string EndOfLine { get; set; }
-        public static bool ConstEnumsEnabled { get; set; }
-        public static string InterfaceFormat { get; set; }
-        public static List<string> IgnoreInterfaces { get; set; }
-        public static string DictionaryFormat { get; set; }
+            if (settings.StartingTypeMap != null)
+            {
+                foreach (var key in settings.StartingTypeMap.Keys)
+                {
+                    StartingTypeMap[key] = settings.StartingTypeMap[key];
+                }
+            }
+            if (settings.IgnoreInterfaces != null)
+            {
+                IgnoreInterfaces = settings.IgnoreInterfaces;
+            }
+        }
     }
 }
