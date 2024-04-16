@@ -54,12 +54,14 @@ namespace TS.CodeGenerator.Console
                 }
             }
 
-            Assembly asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(input);
+            AssemblyLoadContext inputContext = new AssemblyLoadContext("InputContext");
+
+            Assembly asm = inputContext.LoadFromAssemblyPath(input);
 
             string[] files = Directory.GetFiles(inputFolder, "*.dll");
             foreach (string file in files)
             {
-                AssemblyLoadContext.Default.LoadFromAssemblyPath(file);
+                inputContext.LoadFromAssemblyPath(file);
             }
 
             AssemblyReader reader = new AssemblyReader();
